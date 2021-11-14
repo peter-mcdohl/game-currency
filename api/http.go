@@ -24,6 +24,7 @@ func Run() {
 	// DB Migration
 	if err := gormDB.AutoMigrate(
 		&repository.GormCurrency{},
+		&repository.GormConversionRate{},
 	); err != nil {
 		log.Fatal(err)
 	}
@@ -38,6 +39,7 @@ func Run() {
 	{
 		v1.POST("/currency", addCurrency)
 		v1.GET("/currency", getCurrency)
+		v1.POST("/currency/conversion-rate", addConvertionRate)
 	}
 
 	if err := router.Run(); err != nil {
