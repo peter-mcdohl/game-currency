@@ -6,6 +6,8 @@ import (
 	"game-currency/entity"
 	"game-currency/repository"
 	"log"
+
+	"gorm.io/gorm"
 )
 
 type CurrencyService struct {
@@ -41,4 +43,13 @@ func (cs *CurrencyService) AddCurrency(data repository.GormCurrency) error {
 	return err
 }
 
-func (cs *CurrencyService) GetAllCurrency() {}
+func (cs *CurrencyService) GetAllCurrency() []repository.GormCurrency {
+	var data []repository.GormCurrency
+
+	err := cs.repository.FindAll(&data)
+	if err != nil && err != gorm.ErrRecordNotFound {
+		log.Println(err)
+	}
+
+	return data
+}

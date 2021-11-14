@@ -23,3 +23,8 @@ func (repo GormRepository) Insert(data interface{}) error {
 	result := repo.db.Create(data)
 	return result.Error
 }
+
+func (repo GormRepository) FindAll(data interface{}) error {
+	result := repo.db.Find(data)
+	return result.Error
+}

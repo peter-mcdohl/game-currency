@@ -28,7 +28,14 @@ func addCurrency(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"message": "Succuessfully add currency"})
 }
 
-func getCurrency(c *gin.Context) {}
+func getCurrency(c *gin.Context) {
+	repo := repository.NewGormRepository(gormDB)
+	svc := service.NewCurrencyService(repo)
+
+	data := svc.GetAllCurrency()
+
+	c.JSON(http.StatusOK, gin.H{"data": data})
+}
 
 func addConvertionRate(c *gin.Context) {}
 

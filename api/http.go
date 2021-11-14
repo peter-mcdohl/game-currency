@@ -37,6 +37,7 @@ func Run() {
 	v1 := router.Group("/v1")
 	{
 		v1.POST("/currency", addCurrency)
+		v1.GET("/currency", getCurrency)
 	}
 
 	if err := router.Run(); err != nil {
