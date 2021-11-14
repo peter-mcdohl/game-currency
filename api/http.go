@@ -3,6 +3,7 @@ package api
 import (
 	"game-currency/repository"
 	"log"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -14,8 +15,7 @@ var (
 
 func Run() {
 	var errDB error
-	// TODO: get it from env var
-	dsn := "host=localhost user=postgres password=secret dbname=currency sslmode=disable TimeZone=Asia/Jakarta"
+	dsn := os.Getenv("PG_DSN")
 	gormDB, errDB = repository.NewPostgresDB(dsn)
 	if errDB != nil {
 		log.Fatal(errDB)
