@@ -80,4 +80,28 @@ func (crs *ConversionRateService) AddConvertionRate(data repository.GormConversi
 	return nil
 }
 
-func (crs *ConversionRateService) ConvertCurrency() {}
+type ConversionRateRequest struct {
+	CurrencyIDFrom int     `json:"currency_id_from"`
+	CurrencyIDTo   int     `json:"currency_id_to"`
+	Amount         float64 `json:"amount"`
+}
+
+func (crs *ConversionRateService) ConvertCurrency(data ConversionRateRequest) (float64, error) {
+	var conversionRate repository.GormConversionRate
+
+	if err := crs.repository.FindByConditionStruct(&conversionRate,
+		&repository.GormConversionRate{
+			CurrencyIDFrom: data.CurrencyIDFrom,
+			CurrencyIDTo:   data.CurrencyIDTo,
+		},
+	); err != nil {
+		log.Println(err)
+		return 0, err
+	}
+
+	b, _ := json.Marshal(conversionRate)
+	var entity entity.ConversionRate
+	json.Unmarshal(b, &entity)
+
+	return entity.Convert(data.Amount), nil
+}

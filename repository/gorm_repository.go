@@ -40,3 +40,8 @@ func (repo GormRepository) FindByField(data interface{}, fieldName string, field
 	result := repo.db.Where(fmt.Sprintf("%s = ?", fieldName), fieldValue).First(data)
 	return result.Error
 }
+
+func (repo GormRepository) FindByConditionStruct(data interface{}, conds interface{}) error {
+	result := repo.db.Where(conds).First(data)
+	return result.Error
+}

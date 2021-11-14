@@ -56,4 +56,22 @@ func addConvertionRate(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"message": "Succuessfully add conversion rate"})
 }
 
-func convertCurrency(c *gin.Context) {}
+func convertCurrency(c *gin.Context) {
+	var data service.ConversionRateRequest
+	if err := c.ShouldBindJSON(&data); err != nil {
+		log.Println(err)
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid request data"})
+		return
+	}
+
+	repo := repository.NewGormRepository(gormDB)
+	svc := service.NewConversionRateService(repo)
+
+	result, err := svc.ConvertCurrency(data)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Failed to convert"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"result": result})
+}

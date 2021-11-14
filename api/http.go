@@ -40,6 +40,7 @@ func Run() {
 		v1.POST("/currency", addCurrency)
 		v1.GET("/currency", getCurrency)
 		v1.POST("/currency/conversion-rate", addConvertionRate)
+		v1.POST("/currency/convert", convertCurrency)
 	}
 
 	if err := router.Run(); err != nil {
